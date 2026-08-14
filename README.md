@@ -1,5 +1,7 @@
 # dsh-hud
 
+[English](README.md) | [简体中文](README.zh-CN.md)
+
 ![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)
 
 A **HUD status panel** plugin for [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) (`dsh`) web.
