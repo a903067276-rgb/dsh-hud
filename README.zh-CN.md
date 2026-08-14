@@ -39,9 +39,10 @@ dsh plugin --profile web add "github:a903067276-rgb/dsh-hud#main"
 
 装完**重启 `dsh web`**（bundle 层在启动时合成，热更新无效）。
 
-> 没有 `dsh plugin` 命令的环境可用手动兜底（`~/.dsh/cordis.patch.yml` 里
-> 文件路径 + 包名双 entry 挂载），见 [docs/install.md](docs/install.md)。
-> bundle 安装与手动挂载**二选一**，不要同时用。
+> **需要 pnpm**（`dsh plugin` 是 pnpm 转发器）：未安装用 `npm i -g pnpm`，主版本需与
+> profile 现有 store 一致。没有 `dsh plugin` 命令的环境可用手动兜底
+> （`~/.dsh/cordis.patch.yml` 里文件路径 + 包名双 entry 挂载），见
+> [docs/install.md](docs/install.md)。bundle 安装与手动挂载**二选一**，不要同时用。
 
 ## 使用
 

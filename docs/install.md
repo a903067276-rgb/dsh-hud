@@ -12,6 +12,10 @@ dsh plugin --profile web add "github:a903067276-rgb/dsh-hud#main"
 装完**重启 `dsh web`**（bundle 层在启动时合成）。更新时
 `dsh plugin --profile web update dsh-hud`（或换 git 源 ref），重启生效。
 
+> **需要 pnpm**：`dsh plugin` 是 pnpm 转发器，PATH 里没有 pnpm 会直接失败。
+> 未安装可用 `npm i -g pnpm`（或 corepack 启用）；pnpm 主版本需与 profile
+> 现有 store 一致（本机为 v11，装 pnpm@10 会报 `ERR_PNPM_UNEXPECTED_STORE`）。
+
 ## 安装（兜底：手动挂载，macOS 实测路径）
 
 > 手动方式**无需** `dsh plugin add`，但必须按下面的"双 entry"挂载（早期实测结论），

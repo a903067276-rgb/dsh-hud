@@ -41,9 +41,11 @@ dsh plugin --profile web add "github:a903067276-rgb/dsh-hud#main"
 
 Then **restart `dsh web`** (bundle layers are composed at startup; HMR does not apply).
 
-> A manual fallback (file-path + package-name double mount in `~/.dsh/cordis.patch.yml`)
-> exists for environments without `dsh plugin` — see [docs/install.md](docs/install.md).
-> Use either the bundle install or the manual mount, never both.
+> Requires `pnpm` on PATH (`dsh plugin` forwards to pnpm): `npm i -g pnpm` if missing,
+> matching the profile store's major version. A manual fallback (file-path + package-name
+> double mount in `~/.dsh/cordis.patch.yml`) exists for environments without `dsh plugin`
+> — see [docs/install.md](docs/install.md). Use either the bundle install or the manual
+> mount, never both.
 
 ## Usage
 
