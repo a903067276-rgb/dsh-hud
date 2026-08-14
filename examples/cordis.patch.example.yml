@@ -1,0 +1,14 @@
+# dsh-hud 挂载示例 —— 追加到 ~/.dsh/cordis.patch.yml 的 insert 列表
+#
+# 注意：必须双 entry —— 文件路径挂载供 host（数据路由 apply 执行），
+# 包名挂载供 client（clientModules 按包名扫描，浏览器侧 UI）。
+# 详见 docs/install.md。
+
+- insert:
+    # Host 半：文件路径挂载（apply 注册 /api/dsh-hud 数据路由）
+    - id: dsh-hud
+      name: /Users/<you>/dsh-plugins/dsh-hud/lib/index.js
+    # Client 半：包名挂载（浏览器 UI），需要先让包名可解析
+    # （npm 全局安装的 dsh：ln -s <repo> ~/.dsh/profiles/web/node_modules/dsh-hud）
+    - id: dsh-hud-client
+      name: 'dsh-hud'
