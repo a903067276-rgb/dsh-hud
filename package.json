@@ -7,10 +7,12 @@
   "exports": {
     ".": "./lib/index.js",
     "./client": "./lib/client.js",
+    "./cordis.patch.yml": "./cordis.patch.yml",
     "./package.json": "./package.json"
   },
   "files": [
-    "lib"
+    "lib",
+    "cordis.patch.yml"
   ],
   "keywords": [
     "dsh",
@@ -31,6 +33,9 @@
     "url": "https://github.com/a903067276-rgb/dsh-hud.git"
   },
   "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
     "client": {
       "inject": [
         "@deepseek-ai/dsh-api-remotes",

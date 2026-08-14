@@ -32,20 +32,18 @@ at a glance that a project has pending changes without opening the panel.
 
 ## Installation
 
-```bash
-git clone https://github.com/a903067276-rgb/dsh-hud.git ~/dsh-plugins/dsh-hud
-ln -s ~/dsh-plugins/dsh-hud ~/.dsh/profiles/web/node_modules/dsh-hud   # macOS / Linux
+This repository is an official **bundle plugin** (`dsh.bundle` + `dsh.client` in the root
+`package.json`), installed through the official profile manager:
+
+```sh
+dsh plugin --profile web add "github:a903067276-rgb/dsh-hud#main"
 ```
 
-Then append the two mount entries from
-[`examples/cordis.patch.example.yml`](examples/cordis.patch.example.yml) to
-`~/.dsh/cordis.patch.yml` and **restart `dsh web`** (host composition changes require a
-full restart; HMR does not apply).
+Then **restart `dsh web`** (bundle layers are composed at startup; HMR does not apply).
 
-> The two entries are both required (verified): the file-path mount runs the host half
-> (data routes), the package-name mount is what the client module scanner discovers
-> (browser UI). Windows users: prefer `dsh plugin --profile web add dsh-hud` over
-> `ln -s`. Full details, verification steps, and uninstall: [docs/install.md](docs/install.md).
+> A manual fallback (file-path + package-name double mount in `~/.dsh/cordis.patch.yml`)
+> exists for environments without `dsh plugin` — see [docs/install.md](docs/install.md).
+> Use either the bundle install or the manual mount, never both.
 
 ## Usage
 
@@ -76,14 +74,31 @@ step, sharing state between the button and the panel through a module-level stor
 ## Development
 
 ```
-lib/index.js    host half — data routes (git / mcp / skills / model)
-lib/client.js   client half — UI (button + panel), final bundle, no build step
-docs/           install guide & architecture notes
-examples/       cordis.patch.yml mount example
+lib/index.js        host half — data routes (git / mcp / skills / model)
+lib/client.js       client half — UI (button + panel), final bundle, no build step
+cordis.patch.yml    bundle patch — single package-name mount (official bundle flow)
+docs/               install guide & architecture notes
+examples/           manual double-mount example (fallback install path)
 ```
 
 To test locally: symlink (or `dsh plugin --profile web link`) into the web profile's
 `node_modules`, add the two mount entries, restart `dsh web`.
+
+## Design philosophy
+
+**Simple by design.** dsh-hud is deliberately minimal:
+
+- **Zero dependencies** — no runtime packages, no build step; the client bundle is the
+  final artifact in the repo
+- **Read-only** — it only reads git status, MCP/skills listings and official projections;
+  no git write operations, no file mutations
+- **One button, one panel** — no settings pages, no config files
+
+It is an **independent community project**: not an official DeepSeek product, and not
+affiliated with, forked from, or sharing code with any other DSH plugin project. If your
+workflow needs heavyweight SCM operations (commit/push UI, file trees, git graphs), other
+plugins cover that; dsh-hud deliberately stays a glanceable status HUD and coexists with
+them.
 
 ## Community
 

@@ -56,3 +56,5 @@ dsh-hud 分两半，通过 HTTP 通信，互不感知对方内部：
 3. `shell.run` 返回 `CollectedOutput`，`.text` 才是字符串；判定非 git 仓库用 `exitCode`。
 4. `git log --pretty=format:%h|%s|%ct` 的 `|` 会被 bash 当管道，format 必须加引号。
 5. 宿主组合（patch 层）变化必须重启 `dsh web`；client 侧改动经 HMR 热更。
+6. 手动挂载（用户 patch 层）必须双 entry；官方 bundle 流程（仓库根 `cordis.patch.yml`）
+   单 entry 包名挂载即可，无此问题。

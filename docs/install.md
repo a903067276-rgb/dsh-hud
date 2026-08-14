@@ -1,6 +1,23 @@
 # 安装指南（dsh-hud）
 
-## 前置条件
+## 安装（推荐：官方 bundle 一行安装）
+
+本仓库是官方 **bundle 插件**格式（根 `package.json` 的 `dsh.bundle` + `dsh.client`），
+经官方 profile 管理：
+
+```sh
+dsh plugin --profile web add "github:a903067276-rgb/dsh-hud#main"
+```
+
+装完**重启 `dsh web`**（bundle 层在启动时合成）。更新时
+`dsh plugin --profile web update dsh-hud`（或换 git 源 ref），重启生效。
+
+## 安装（兜底：手动挂载，macOS 实测路径）
+
+> 手动方式**无需** `dsh plugin add`，但必须按下面的"双 entry"挂载（早期实测结论），
+> 且与 bundle 安装**二选一**，不要同时用。
+
+### 前置条件
 
 - 已安装 DSH web（`dsh web` 命令可用）。
 - 依赖 `git` 命令行（在 PATH 中）。
@@ -9,7 +26,7 @@
 - 插件按**包名**解析时，依赖 web profile 的 `node_modules`。npm 全局安装的 dsh 对应路径为
   `~/.dsh/profiles/web/node_modules`。
 
-## 安装步骤
+### 安装步骤
 
 1. **把仓库放到本地**，例如 `~/dsh-plugins/dsh-hud`（克隆或直接拷贝均可）。
 
@@ -22,11 +39,7 @@
      ln -s ~/dsh-plugins/dsh-hud ~/.dsh/profiles/web/node_modules/dsh-hud
      ```
 
-   - Windows：`ln -s` 需要管理员权限或开发者模式，推荐用 pnpm 官方通道代替
-     （见下方说明）。
-
-   > 任意平台都可用官方命令代替软链（pnpm 方式）：
-   > `dsh plugin --profile web add dsh-hud`（本地开发用 `dsh plugin --profile web link <路径>`）。
+   - Windows：`ln -s` 需要管理员权限或开发者模式，直接用上面的官方 bundle 安装即可。
 
 3. **在 `~/.dsh/cordis.patch.yml` 追加双 entry**（示例见
    [`examples/cordis.patch.example.yml`](../examples/cordis.patch.example.yml)）：
@@ -52,9 +65,11 @@
 
 ## 卸载
 
-- 删除 `cordis.patch.yml` 里的两条 entry；
-- 删除软链 `~/.dsh/profiles/web/node_modules/dsh-hud`（或 `dsh plugin --profile web remove dsh-hud`）；
-- 重启 `dsh web`。
+- bundle 安装：`dsh plugin --profile web remove dsh-hud`，重启 `dsh web`。
+- 手动挂载：删除 `~/.dsh/cordis.patch.yml` 里的两条 entry、删除软链
+  `~/.dsh/profiles/web/node_modules/dsh-hud`，重启 `dsh web`。
+- 从手动挂载**迁移**到 bundle 安装：先卸载手动方式（上一条），再执行 bundle 安装命令，
+  重启。两种方式不要同时存在。
 
 ## 平台支持
 
@@ -75,8 +90,9 @@ Git Bash），git porcelain 输出本身与平台无关，解析器已做 CRLF �
 
 ## 已知注意事项（全部实测）
 
-1. **必须双 entry**：用户 patch 层里「包名挂载」host 的 `apply` 不执行；「文件路径挂载」
-   clientModules 发现不了（bundle 404）。两条互补缺一不可。
+1. **手动挂载必须双 entry**：用户 patch 层里「包名挂载」host 的 `apply` 不执行；
+   「文件路径挂载」clientModules 发现不了（bundle 404）。两条互补缺一不可。
+   （官方 bundle 安装没有这个问题，单 entry 即可。）
 2. **文件路径挂载的插件必须 `export const inject = [...]` 声明依赖**，否则
    `ctx.get()` 拿到的服务全是 `undefined`。
 3. **旧副本遮蔽**：`~/.dsh/profiles/web/node_modules` 里如果残留旧拷贝（而非软链），

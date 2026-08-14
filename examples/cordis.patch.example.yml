@@ -1,8 +1,11 @@
-# dsh-hud 挂载示例 —— 追加到 ~/.dsh/cordis.patch.yml 的 insert 列表
+# dsh-hud 手动挂载示例（兜底安装路径，仅在没有 `dsh plugin` 命令的环境使用）
 #
-# 注意：必须双 entry —— 文件路径挂载供 host（数据路由 apply 执行），
+# 追加到 ~/.dsh/cordis.patch.yml 的 insert 列表。
+# 注意：手动方式必须双 entry —— 文件路径挂载供 host（数据路由 apply 执行），
 # 包名挂载供 client（clientModules 按包名扫描，浏览器侧 UI）。
-# 详见 docs/install.md。
+# 官方 bundle 安装（`dsh plugin --profile web add "github:a903067276-rgb/dsh-hud#main"`）
+# 使用仓库根的 cordis.patch.yml，无需本示例。
+# 两种方式二选一，详见 docs/install.md。
 
 - insert:
     # Host 半：文件路径挂载（apply 注册 /api/dsh-hud 数据路由）

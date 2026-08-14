@@ -1,0 +1,6 @@
+# dsh-hud bundle patch：向 web 组合挂载 dsh-hud。
+# host 半（数据路由）与 client 半（__ModuleLoader__ UI）都由官方 bundle 流程解析，
+# 无需手动双 entry。经 `dsh plugin --profile web add "github:a903067276-rgb/dsh-hud#main"` 安装。
+- insert:
+    - id: dsh-hud
+      name: dsh-hud

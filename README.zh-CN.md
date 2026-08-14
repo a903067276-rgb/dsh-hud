@@ -30,18 +30,18 @@
 
 ## 安装
 
-```bash
-git clone https://github.com/a903067276-rgb/dsh-hud.git ~/dsh-plugins/dsh-hud
-ln -s ~/dsh-plugins/dsh-hud ~/.dsh/profiles/web/node_modules/dsh-hud   # macOS / Linux
+本仓库是官方 **bundle 插件**格式（根 `package.json` 的 `dsh.bundle` + `dsh.client`），
+经官方 profile 管理一行安装：
+
+```sh
+dsh plugin --profile web add "github:a903067276-rgb/dsh-hud#main"
 ```
 
-然后把 [`examples/cordis.patch.example.yml`](examples/cordis.patch.example.yml) 里的
-两条挂载 entry 追加到 `~/.dsh/cordis.patch.yml`，**重启 `dsh web`**（宿主组合变化必须
-重启，热更新无效）。
+装完**重启 `dsh web`**（bundle 层在启动时合成，热更新无效）。
 
-> 两条 entry 缺一不可（已实测）：文件路径挂载跑 host 半（数据路由），包名挂载供
-> client 模块扫描发现（浏览器 UI）。Windows 用户建议用 `dsh plugin --profile web add dsh-hud`
-> 代替 `ln -s`。完整步骤、验证方法、卸载：见 [docs/install.md](docs/install.md)。
+> 没有 `dsh plugin` 命令的环境可用手动兜底（`~/.dsh/cordis.patch.yml` 里
+> 文件路径 + 包名双 entry 挂载），见 [docs/install.md](docs/install.md)。
+> bundle 安装与手动挂载**二选一**，不要同时用。
 
 ## 使用
 
@@ -70,14 +70,27 @@ Host 半经 `webServer` prefix 路由输出 JSON，全部 git 命令合并成**�
 ## 开发
 
 ```
-lib/index.js    host 半 —— 数据路由（git / mcp / skills / model）
-lib/client.js   client 半 —— UI（按钮 + 面板），最终产物，无构建步骤
-docs/           安装指南与实现说明
-examples/       cordis.patch.yml 挂载示例
+lib/index.js        host 半 —— 数据路由（git / mcp / skills / model）
+lib/client.js       client 半 —— UI（按钮 + 面板），最终产物，无构建步骤
+cordis.patch.yml    bundle patch —— 单 entry 包名挂载（官方 bundle 流程）
+docs/               安装指南与实现说明
+examples/           手动双 entry 挂载示例（兜底安装路径）
 ```
 
 本地测试：软链（或 `dsh plugin --profile web link`）进 web profile 的 node_modules，
 加两条挂载 entry，重启 `dsh web`。
+
+## 设计路线（简洁优先）
+
+dsh-hud 刻意保持最小：
+
+- **零依赖** —— 无运行时依赖、无构建步骤，client bundle 就是仓库里的最终产物
+- **纯只读** —— 只读 git 状态、MCP/Skills 列表和官方投影，不做任何 git 写操作、不改文件
+- **一个按钮一个面板** —— 没有设置页、没有配置文件
+
+**独立社区项目**：非 DeepSeek 官方出品，与任何其他 DSH 插件项目无关联、非衍生、无代码
+共享。需要重操作（提交/推送 UI、文件树、git 图谱）的话，社区有其他插件覆盖；dsh-hud
+刻意只做"扫一眼就懂"的状态面板，可与它们共存。
 
 ## 社区
 
