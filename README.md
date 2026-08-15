@@ -18,6 +18,13 @@ One button in the input toolbar opens a floating panel showing:
 The button also shows a live badge with the number of uncommitted files, so you can see
 at a glance that a project has pending changes without opening the panel.
 
+## Screenshot
+
+![dsh-hud panel](assets/hud-panel.png)
+
+The floating panel showing git status, commit history, MCP servers, skills and official
+usage info (tokens, cache hit rate, turns/steps, LLM & tool time, context usage).
+
 ## Platform support
 
 | Platform | Status |
