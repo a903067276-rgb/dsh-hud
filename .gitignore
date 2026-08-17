@@ -3,3 +3,6 @@ node_modules/
 .DS_Store
 dist/
 .tmp/
+
+# local test uploads (screenshots etc.)
+uploads/
