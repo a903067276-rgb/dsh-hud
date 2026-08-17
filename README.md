@@ -14,6 +14,12 @@ One button in the input toolbar opens a floating panel showing:
 - **Official info** — current model + reasoning effort, plan mode state, token usage
   (input / output / cache-hit rate), session stats (turns, steps, LLM & tool time, decode
   tok/s, context usage %)
+- **Balance** — official DeepSeek account balance, auto-fetched from
+  `GET /user/balance` using the `DEEPSEEK_API_KEY` credential (the key never leaves
+  the host; shows `--` when unavailable)
+- **Per-model usage** — current session's token buckets broken down by model
+  (requests, input, cache, output), so flash/pro usage both remain visible after
+  switching
 
 The button also shows a live badge with the number of uncommitted files, so you can see
 at a glance that a project has pending changes without opening the panel.

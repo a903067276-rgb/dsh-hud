@@ -28,6 +28,16 @@ dsh-hud 分两半，通过 HTTP 通信，互不感知对方内部：
   不传只返回全局层。
 - **当前模型**：`apiProxy.sessions.models({ payload: { sessionId } })`，注意入参是 RPC
   信封（`{ payload }`），返回值在 `res.result.value`。
+- **官方余额**：`credentials.resolve("DEEPSEEK_API_KEY")`（凭据服务，返回
+  `{ value, source }`）→ `GET https://api.deepseek.com/user/balance`（Bearer、5s 超时），
+  60s 内存缓存防抖；任何失败返回 `null`（界面 `--`）。key 只在 host 侧使用，不出机器。
+- **分模型用量投影单元 `perModelUsage`**：注册进 `ctx.sessionProjections`（与官方
+  token-meter 同机制，经 `session/projection` 帧推给浏览器）：
+  - `request/header` 事件标记"当前请求模型"（顺序生效，每次 +1 请求数）；
+  - usage 事件（assistant/chunk 的 usage 块、assistant/message）按当前模型累计；
+  - 同一 (轮,步) 重复样本**替换**而非累加（与 token-meter 同语义，防双计）；
+  - 校验：`scripts/replay-permodel.mjs` 对真实会话日志重放，与独立参照折叠对账，
+    且分模型之和 == 官方 tokenUsage 总量（已实测一致）。
 - 只输出标量/数组，不序列化任何 live 对象；任何依赖缺失时静默跳过（HUD 是锦上添花）。
 
 ## Client 半（lib/client.js）
@@ -39,8 +49,8 @@ dsh-hud 分两半，通过 HTTP 通信，互不感知对方内部：
   面板读开合 + 数据；投影数据也经它中转。
 - **两个 seat**：
   - `conversation.input.left`（session 级 seat，有 `useProjection`）——按钮 + 角标；
-    在此订阅官方投影：`plan` / `tokenUsage` / `sessionStats` / `contextPressure`，
-    提取标量后 `emit` 进共享 store。
+    在此订阅官方投影：`plan` / `tokenUsage` / `sessionStats` / `contextPressure` /
+    `perModelUsage`，提取标量后 `emit` 进共享 store。
   - `shell.overlay`（root 级 seat，**没有** `useProjection`）——浮层面板，从共享 store
     读投影数据。
 - **轮询**：面板开 30s 全量刷新；面板关只轮询 git light 数据（角标常驻）。

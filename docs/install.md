@@ -1,5 +1,14 @@
 # 安装指南（dsh-hud）
 
+## 官方余额功能说明
+
+面板状态行的 💰 余额来自 DeepSeek 官方接口 `GET /user/balance`，自动拉取、无需配置——
+它复用 DSH 的凭据服务，读取 `DEEPSEEK_API_KEY`（`~/.dsh/.credentials.yaml` 或环境变量，
+DSH 本身也需要它才能调用模型，通常已存在）。key 只在 host 进程内使用，不会发给浏览器。
+
+- 无该凭据 / 网络失败 / 非官方 baseURL 代理：余额显示 `--`，不影响其他功能
+- 分模型用量为本地会话统计（与官方投影同源），不依赖任何凭据
+
 ## 安装（推荐：官方 bundle 一行安装）
 
 本仓库是官方 **bundle 插件**格式（根 `package.json` 的 `dsh.bundle` + `dsh.client`），
