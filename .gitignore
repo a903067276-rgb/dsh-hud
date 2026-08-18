@@ -6,3 +6,6 @@ dist/
 
 # local test uploads (screenshots etc.)
 uploads/
+
+# test memory
+internal/
