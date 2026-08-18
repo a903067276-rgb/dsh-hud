@@ -1,11 +1,23 @@
-# dsh-hud
+# dsh-hud 📊
 
 [English](README.md) | [简体中文](README.zh-CN.md)
 
 ![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)
 
-[DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness)（`dsh`）web 的 **HUD 状态面板**插件。
-输入框工具行一键按钮，右侧浮层面板展示：
+[DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness)（`dsh`）web 的 **HUD 状态面板**插件：输入框工具行一键按钮，右侧浮层面板展示 Git 状态、MCP 服务器、技能列表、官方用量信息与余额。
+
+*非官方项目：社区成员独立开发维护，非 DeepSeek 官方产品。*
+
+## 截图
+
+![dsh-hud 输入框仪表盘按钮](assets/hud-button.png)
+
+![dsh-hud 面板](assets/hud-panel.png)
+
+右侧浮层面板：Git 状态、提交历史、MCP 服务器、技能列表，以及官方用量信息
+（token 输入/输出、缓存命中率、轮数/步数、LLM 与工具耗时、上下文占用）。
+
+## 功能
 
 - **Git** —— 分支、ahead/behind、未暂存 / 已暂存 / 未跟踪文件（分组可折叠）、每文件
   `+N/-N` 摘要、点击文件展开 diff 全文、最近 5 条提交
@@ -20,30 +32,6 @@
 
 按钮还带**未提交文件数角标**，不打开面板也能一眼看出项目有没有待提交改动。
 
-*非官方项目：社区成员独立开发维护，非 DeepSeek 官方产品。*
-## 截图
-
-![dsh-hud 输入框仪表盘按钮](assets/hud-button.png)
-
-![dsh-hud 面板](assets/hud-panel.png)
-
-右侧浮层面板：Git 状态、提交历史、MCP 服务器、技能列表，以及官方用量信息
-（token 输入/输出、缓存命中率、轮数/步数、LLM 与工具耗时、上下文占用）。
-
-## 平台支持
-
-| 平台 | 状态 |
-|---|---|
-| macOS | ✅ 开发环境，全功能实测 |
-| Windows / Linux | ⚠️ 未实测；架构上预期可用，见 [docs/install.md](docs/install.md#平台支持) |
-
-## 环境要求
-
-- DSH web（`npx @deepseek-ai/dsh web` 启动）
-- PATH 里有 `git` 命令行
-- 不需要额外装 shell：DSH 的 shell 服务在所有平台上都以 `bash -c` 执行（Windows 为
-  Git Bash），DSH 能跑，本插件就跟着能跑
-
 ## 安装
 
 本仓库是官方 **bundle 插件**格式（根 `package.json` 的 `dsh.bundle` + `dsh.client`），
@@ -53,18 +41,31 @@
 dsh plugin --profile web add "github:a903067276-rgb/dsh-hud#main"
 ```
 
-装完**重启 `dsh web`**（bundle 层在启动时合成，热更新无效）。
+装完**重启 `dsh web`**（bundle 层在启动时合成，热更新无效）。需要 pnpm
+（`dsh plugin` 是 pnpm 转发器）。
 
-> **需要 pnpm**（`dsh plugin` 是 pnpm 转发器）：未安装用 `npm i -g pnpm`，主版本需与
-> profile 现有 store 一致。没有 `dsh plugin` 命令的环境可用手动兜底
-> （`~/.dsh/cordis.patch.yml` 里文件路径 + 包名双 entry 挂载），见
-> [docs/install.md](docs/install.md)。bundle 安装与手动挂载**二选一**，不要同时用。
+手动挂载兜底：见 [docs/install.md](docs/install.md)。
 
-## 使用
+## 用法
 
 点输入框工具行的仪表盘图标按钮（官方 dsw 风格，跟随深浅色主题）。面板贴右侧展开（默认 240px），拖左边缘把手调整宽度
 （200–480px，localStorage 记忆）。带计数徽标的小节标题可点击折叠/展开。数据每 30 秒
 自动刷新（面板关闭时只轮询轻量的 git 角标数据）。
+
+## 平台支持
+
+| 平台 | 状态 |
+|---|---|
+| macOS | ✅ 开发环境，全功能实测 |
+| Linux | ⚠️ 未实测；架构上预期可用，见 [docs/install.md](docs/install.md#平台支持) |
+| Windows | ⚠️ 未实测；架构上预期可用，见 [docs/install.md](docs/install.md#平台支持) |
+
+## 环境要求
+
+- DSH web（`npx @deepseek-ai/dsh web` 启动）
+- PATH 里有 `git` 命令行
+- 不需要额外装 shell：DSH 的 shell 服务在所有平台上都以 `bash -c` 执行（Windows 为
+  Git Bash），DSH 能跑，本插件就跟着能跑
 
 ## 工作原理
 
@@ -83,6 +84,12 @@ Host 半经 `webServer` prefix 路由输出 JSON，全部 git 命令合并成**�
 `window.__ModuleLoader__.load(...)` bundle，零构建步骤；按钮与面板通过模块级 store
 （`useSyncExternalStore`）共享状态。维护者请看 [docs/architecture.md](docs/architecture.md)
 （含实现细节与踩坑记录）。
+
+## 注意事项
+
+- bundle 安装与手动挂载**二选一**，不要同时用。
+- 所有数据都在本地从运行中的 `dsh` 实例读取；唯一的外呼是官方余额接口
+  （用 `DEEPSEEK_API_KEY` 凭据，key 不出机器）。
 
 ## 开发
 

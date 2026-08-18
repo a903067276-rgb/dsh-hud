@@ -1,11 +1,22 @@
-# dsh-hud
+# dsh-hud 📊
 
 [English](README.md) | [简体中文](README.zh-CN.md)
 
 ![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)
 
-A **HUD status panel** plugin for [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) (`dsh`) web.
-One button in the input toolbar opens a floating panel showing:
+A **HUD status panel** plugin for [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) (`dsh`) web: one button in the input toolbar opens a floating panel with git status, MCP servers, skills, official usage info and balance.
+
+*Unofficial project: independently developed and maintained by a community member, not an official DeepSeek product.*
+
+## Screenshot
+
+![dsh-hud gauge button in the input toolbar](assets/hud-button.png)
+
+![dsh-hud panel](assets/hud-panel.png)
+
+The gauge button in the input toolbar opens the floating panel showing git status, commit history, MCP servers, skills and official usage info (tokens, cache hit rate, turns/steps, LLM & tool time, context usage).
+
+## Features
 
 - **Git** — branch, ahead/behind, unstaged / staged / untracked files (collapsible groups),
   per-file `+N/-N` summaries, click a file to expand its full diff, last 5 commits
@@ -24,31 +35,7 @@ One button in the input toolbar opens a floating panel showing:
 The button also shows a live badge with the number of uncommitted files, so you can see
 at a glance that a project has pending changes without opening the panel.
 
-## Screenshot
-
-![dsh-hud gauge button in the input toolbar](assets/hud-button.png)
-
-![dsh-hud panel](assets/hud-panel.png)
-
-The gauge button in the input toolbar opens the floating panel showing git status, commit
-history, MCP servers, skills and official usage info (tokens, cache hit rate, turns/steps,
-LLM & tool time, context usage).
-
-## Platform support
-
-| Platform | Status |
-|---|---|
-| macOS | ✅ Fully tested (development environment) |
-| Windows / Linux | ⚠️ Not yet tested — expected to work, see [docs/install.md](docs/install.md#平台支持) |
-
-## Requirements
-
-- DSH web (run with `npx @deepseek-ai/dsh web`)
-- `git` CLI on PATH
-- No extra shell needed: DSH's `shell` service executes everything via `bash -c` on all
-  platforms (Git Bash on Windows), so if DSH runs, this plugin runs.
-
-## Installation
+## Install
 
 This repository is an official **bundle plugin** (`dsh.bundle` + `dsh.client` in the root
 `package.json`), installed through the official profile manager:
@@ -58,12 +45,9 @@ dsh plugin --profile web add "github:a903067276-rgb/dsh-hud#main"
 ```
 
 Then **restart `dsh web`** (bundle layers are composed at startup; HMR does not apply).
+Requires `pnpm` on PATH (`dsh plugin` forwards to pnpm).
 
-> Requires `pnpm` on PATH (`dsh plugin` forwards to pnpm): `npm i -g pnpm` if missing,
-> matching the profile store's major version. A manual fallback (file-path + package-name
-> double mount in `~/.dsh/cordis.patch.yml`) exists for environments without `dsh plugin`
-> — see [docs/install.md](docs/install.md). Use either the bundle install or the manual
-> mount, never both.
+Manual mount fallback: see [docs/install.md](docs/install.md).
 
 ## Usage
 
@@ -72,6 +56,21 @@ dark/light theme). The panel opens on the right side (default 240px);
 drag its left edge to resize (200–480px, remembered in `localStorage`). Section headers
 with count badges are clickable to collapse/expand. Data auto-refreshes every 30s (when
 the panel is closed, only the lightweight git badge keeps polling).
+
+## Platform support
+
+| Platform | Status |
+|---|---|
+| macOS | ✅ Fully tested (development environment) |
+| Linux | ⚠️ Not yet tested — expected to work, see [docs/install.md](docs/install.md#平台支持) |
+| Windows | ⚠️ Not yet tested — expected to work, see [docs/install.md](docs/install.md#平台支持) |
+
+## Requirements
+
+- DSH web (run with `npx @deepseek-ai/dsh web`)
+- `git` CLI on PATH
+- No extra shell needed: DSH's `shell` service executes everything via `bash -c` on all
+  platforms (Git Bash on Windows), so if DSH runs, this plugin runs.
 
 ## How it works
 
@@ -91,6 +90,13 @@ The client is a hand-written `window.__ModuleLoader__.load(...)` bundle with zer
 step, sharing state between the button and the panel through a module-level store
 (`useSyncExternalStore`). Details and known pitfalls for maintainers:
 [docs/architecture.md](docs/architecture.md).
+
+## Notes
+
+- Use either the official bundle install or the manual mount — never both.
+- All data is gathered locally from the running `dsh` instance; the only outbound call is
+  the official balance API using the `DEEPSEEK_API_KEY` credential (the key never leaves
+  the host).
 
 ## Development
 
