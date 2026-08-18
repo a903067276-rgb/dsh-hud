@@ -64,7 +64,8 @@ Then **restart `dsh web`** (bundle layers are composed at startup; HMR does not 
 
 ## Usage
 
-Click **📊 HUD** in the input toolbar. The panel opens on the right side (default 240px);
+Click the **gauge icon** in the input toolbar (official DSH design tokens, follows
+dark/light theme). The panel opens on the right side (default 240px);
 drag its left edge to resize (200–480px, remembered in `localStorage`). Section headers
 with count badges are clickable to collapse/expand. Data auto-refreshes every 30s (when
 the panel is closed, only the lightweight git badge keeps polling).
