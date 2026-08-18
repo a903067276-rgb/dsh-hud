@@ -26,10 +26,13 @@ at a glance that a project has pending changes without opening the panel.
 
 ## Screenshot
 
+![dsh-hud gauge button in the input toolbar](assets/hud-button.png)
+
 ![dsh-hud panel](assets/hud-panel.png)
 
-The floating panel showing git status, commit history, MCP servers, skills and official
-usage info (tokens, cache hit rate, turns/steps, LLM & tool time, context usage).
+The gauge button in the input toolbar opens the floating panel showing git status, commit
+history, MCP servers, skills and official usage info (tokens, cache hit rate, turns/steps,
+LLM & tool time, context usage).
 
 ## Platform support
 

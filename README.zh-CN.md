@@ -22,6 +22,8 @@
 
 ## 截图
 
+![dsh-hud 输入框仪表盘按钮](assets/hud-button.png)
+
 ![dsh-hud 面板](assets/hud-panel.png)
 
 右侧浮层面板：Git 状态、提交历史、MCP 服务器、技能列表，以及官方用量信息
