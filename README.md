@@ -4,6 +4,8 @@
 
 ![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)
 
+[![Awesome DSH Plugin](https://awesome-dsh-plugin.com/badge.svg)](https://awesome-dsh-plugin.com)
+
 A **HUD status panel** plugin for [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) (`dsh`) web: one button in the input toolbar opens a floating panel with git status, MCP servers, skills, official usage info and balance.
 
 *Unofficial project: independently developed and maintained by a community member, not an official DeepSeek product.*

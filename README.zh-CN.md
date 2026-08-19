@@ -4,6 +4,8 @@
 
 ![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)
 
+[![Awesome DSH Plugin](https://awesome-dsh-plugin.com/badge.svg)](https://awesome-dsh-plugin.com)
+
 [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness)（`dsh`）web 的 **HUD 状态面板**插件：输入框工具行一键按钮，右侧浮层面板展示 Git 状态、MCP 服务器、技能列表、官方用量信息与余额。
 
 *非官方项目：社区成员独立开发维护，非 DeepSeek 官方产品。*
