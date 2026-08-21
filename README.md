@@ -69,7 +69,7 @@ the panel is closed, only the lightweight git badge keeps polling).
 
 ## Requirements
 
-- DSH web (run with `npx @deepseek-ai/dsh web`)
+- DSH web >= 0.1.0-rc.7 (run with `npx @deepseek-ai/dsh web`)
 - `git` CLI on PATH
 - No extra shell needed: DSH's `shell` service executes everything via `bash -c` on all
   platforms (Git Bash on Windows), so if DSH runs, this plugin runs.
