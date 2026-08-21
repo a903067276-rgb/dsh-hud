@@ -69,8 +69,15 @@ the panel is closed, only the lightweight git badge keeps polling).
 
 ## Requirements
 
-- DSH web >= 0.1.0-rc.7 (run with `npx @deepseek-ai/dsh web`)
-- **rc.6 users:** install the frozen `rc6-compat` tag instead: `dsh plugin add github:a903067276-rgb/dsh-hud#rc6-compat` (no maintenance; upgrade to rc.7+ recommended)
+- DSH web >= 0.1.1-rc.1 (run with `npx @deepseek-ai/dsh web`)
+- **Version compatibility** (the per-model usage projection uses the DSH 0.1.1+ contract; 0.1.0-rc.7/rc.8 still use the old one):
+
+| Your DSH version | Install this | Note |
+|---|---|---|
+| 0.1.1-rc.1 and newer | `main` (v1.2.13+) | Full features |
+| 0.1.0-rc.7 – 0.1.0-rc.8 | `v1.2.11` — `dsh plugin add github:a903067276-rgb/dsh-hud#v1.2.11` | Last release with the pre-0.1.1 projection contract |
+| 0.1.0-rc.6 and older | `rc6-compat` — `dsh plugin add github:a903067276-rgb/dsh-hud#rc6-compat` | Frozen, no maintenance — upgrade recommended |
+
 - `git` CLI on PATH
 - No extra shell needed: DSH's `shell` service executes everything via `bash -c` on all
   platforms (Git Bash on Windows), so if DSH runs, this plugin runs.

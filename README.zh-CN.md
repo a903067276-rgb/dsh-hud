@@ -64,8 +64,15 @@ dsh plugin --profile web add "github:a903067276-rgb/dsh-hud#main"
 
 ## 环境要求
 
-- DSH web（≥ 0.1.0-rc.7）（`npx @deepseek-ai/dsh web` 启动）
-- rc.6 用户：请安装冻结 tag：`dsh plugin add github:a903067276-rgb/dsh-hud#rc6-compat`（不再维护，强烈建议升级 rc.7+）
+- DSH web（≥ 0.1.1-rc.1）（`npx @deepseek-ai/dsh web` 启动）
+- **版本对照**（分模型用量投影使用 0.1.1+ 契约；0.1.0-rc.7/rc.8 仍是旧契约）：
+
+| 你的 DSH 版本 | 装这个 | 说明 |
+|---|---|---|
+| 0.1.1-rc.1 及以上 | `main`（v1.2.13+） | 全功能 |
+| 0.1.0-rc.7 – 0.1.0-rc.8 | `v1.2.11` — `dsh plugin add github:a903067276-rgb/dsh-hud#v1.2.11` | 0.1.1 旧投影契约的最后一个版本 |
+| 0.1.0-rc.6 及更早 | `rc6-compat` — `dsh plugin add github:a903067276-rgb/dsh-hud#rc6-compat` | 冻结，不再维护——建议升级 |
+
 - PATH 里有 `git` 命令行
 - 不需要额外装 shell：DSH 的 shell 服务在所有平台上都以 `bash -c` 执行（Windows 为
   Git Bash），DSH 能跑，本插件就跟着能跑
