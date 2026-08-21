@@ -64,7 +64,7 @@ dsh plugin --profile web add "github:a903067276-rgb/dsh-hud#main"
 
 ## 环境要求
 
-- DSH web（≥ 0.1.0-rc.7）（`npx @deepseek-ai/dsh web` 启动）
+- DSH web（仅 0.1.0-rc.6，冻结兼容分支，不再维护；请使用 ≥ 0.1.0-rc.7 的维护版本）（`npx @deepseek-ai/dsh web` 启动）
 - PATH 里有 `git` 命令行
 - 不需要额外装 shell：DSH 的 shell 服务在所有平台上都以 `bash -c` 执行（Windows 为
   Git Bash），DSH 能跑，本插件就跟着能跑
