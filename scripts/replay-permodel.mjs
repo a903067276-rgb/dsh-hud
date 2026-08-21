@@ -76,7 +76,7 @@ let state = perModelUsageProjection.init()
 for (const ev of events) {
   state = perModelUsageProjection.apply(state, ev)
 }
-const view = perModelUsageProjection.view(state)
+const view = perModelUsageProjection.wire.view(state)
 
 // ── 对账 ──────────────────────────────────────────────────────
 const refByName = Object.fromEntries(Object.entries(ref.models).map(([m, e]) => [m, {

@@ -36,6 +36,9 @@ dsh-hud 分两半，通过 HTTP 通信，互不感知对方内部：
   - `request/header` 事件标记"当前请求模型"（顺序生效，每次 +1 请求数）；
   - usage 事件（assistant/chunk 的 usage 块、assistant/message）按当前模型累计；
   - 同一 (轮,步) 重复样本**替换**而非累加（与 token-meter 同语义，防双计）；
+  - **契约（rc.8 起）**：`stateSchema` + `wire: { viewSchema, view }`，与官方一致
+    （2026-08-21 坑：旧契约的顶层 `schema`/`view` 不再被读取，wire 缺失 = 客户端
+    永远收不到该投影，"分模型"小节整体消失；stateVersion=2 使旧 checkpoint 失效重放）；
   - 校验：`scripts/replay-permodel.mjs` 对真实会话日志重放，与独立参照折叠对账，
     且分模型之和 == 官方 tokenUsage 总量（已实测一致）。
 - 只输出标量/数组，不序列化任何 live 对象；任何依赖缺失时静默跳过（HUD 是锦上添花）。
