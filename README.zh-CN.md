@@ -69,7 +69,7 @@ dsh plugin --profile web add "github:a903067276-rgb/dsh-hud#main"
 
 | 你的 DSH 版本 | 装这个 | 说明 |
 |---|---|---|
-| 0.1.1-rc.1 及以上 | `main`（v1.2.13+） | 全功能 |
+| 0.1.1-rc.1 及以上 | `main`（v1.2.14+） | 全功能 |
 | 0.1.0-rc.7 – 0.1.0-rc.8 | `v1.2.11` — `dsh plugin add github:a903067276-rgb/dsh-hud#v1.2.11` | 0.1.1 旧投影契约的最后一个版本 |
 | 0.1.0-rc.6 及更早 | `rc6-compat` — `dsh plugin add github:a903067276-rgb/dsh-hud#rc6-compat` | 冻结，不再维护——建议升级 |
 

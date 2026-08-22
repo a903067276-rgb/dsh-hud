@@ -74,7 +74,7 @@ the panel is closed, only the lightweight git badge keeps polling).
 
 | Your DSH version | Install this | Note |
 |---|---|---|
-| 0.1.1-rc.1 and newer | `main` (v1.2.13+) | Full features |
+| 0.1.1-rc.1 and newer | `main` (v1.2.14+) | Full features |
 | 0.1.0-rc.7 – 0.1.0-rc.8 | `v1.2.11` — `dsh plugin add github:a903067276-rgb/dsh-hud#v1.2.11` | Last release with the pre-0.1.1 projection contract |
 | 0.1.0-rc.6 and older | `rc6-compat` — `dsh plugin add github:a903067276-rgb/dsh-hud#rc6-compat` | Frozen, no maintenance — upgrade recommended |
 
