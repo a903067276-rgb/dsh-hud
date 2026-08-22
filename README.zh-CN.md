@@ -66,6 +66,7 @@ dsh plugin --profile web add "github:a903067276-rgb/dsh-hud#main"
 
 - DSH web（≥ 0.1.1-rc.1）（`npx @deepseek-ai/dsh web` 启动）
 - **版本对照**（分模型用量投影使用 0.1.1+ 契约；0.1.0-rc.7/rc.8 仍是旧契约）：
+- **维护策略**：本插件将持续跟随 DSH 最新版本演进；对旧版 DSH 的兼容仅是尽力而为、不保证长期有效。
 
 | 你的 DSH 版本 | 装这个 | 说明 |
 |---|---|---|

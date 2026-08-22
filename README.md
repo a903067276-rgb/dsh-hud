@@ -71,6 +71,7 @@ the panel is closed, only the lightweight git badge keeps polling).
 
 - DSH web >= 0.1.1-rc.1 (run with `npx @deepseek-ai/dsh web`)
 - **Version compatibility** (the per-model usage projection uses the DSH 0.1.1+ contract; 0.1.0-rc.7/rc.8 still use the old one):
+- **Maintenance policy**: this plugin keeps evolving with the latest DSH releases; compatibility with older DSH versions is best-effort only and not guaranteed going forward.
 
 | Your DSH version | Install this | Note |
 |---|---|---|
