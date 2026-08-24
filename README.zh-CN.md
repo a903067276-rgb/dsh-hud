@@ -70,7 +70,7 @@ dsh plugin --profile web add "github:a903067276-rgb/dsh-hud#main"
 
 | 你的 DSH 版本 | 装这个 | 说明 |
 |---|---|---|
-| 0.1.1-rc.1 及以上 | `main`（v1.2.14+） | 全功能 |
+| 0.1.1-rc.1 及以上 | `main`（v1.2.15+） | 全功能 |
 | 0.1.0-rc.7 – 0.1.0-rc.8 | `v1.2.11` — `dsh plugin add github:a903067276-rgb/dsh-hud#v1.2.11` | 0.1.1 旧投影契约的最后一个版本 |
 | 0.1.0-rc.6 及更早 | `rc6-compat` — `dsh plugin add github:a903067276-rgb/dsh-hud#rc6-compat` | 冻结，不再维护——建议升级 |
 
@@ -101,6 +101,10 @@ Host 半经 `webServer` prefix 路由输出 JSON，全部 git 命令合并成**�
 - bundle 安装与手动挂载**二选一**，不要同时用。
 - 所有数据都在本地从运行中的 `dsh` 实例读取；唯一的外呼是官方余额接口
   （用 `DEEPSEEK_API_KEY` 凭据，key 不出机器）。
+- **`DSH_HUD_NO_WATCH=1` 可完全关闭文件监听**——HUD 改为纯 30s 轮询 + 手动/聚焦刷新。
+  适合目录树极其庞大的机器（例如一个父目录下放几十个仓库的布局）——macOS 文件监听
+  在这种规模下不稳定；监听器默认也设了 128 个上限，超出的深层目录变化会在 ~30s 内
+  通过轮询发现。
 
 ## 开发
 
