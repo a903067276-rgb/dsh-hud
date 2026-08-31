@@ -6,7 +6,7 @@
 
 [![Awesome DSH Plugin](https://awesome-dsh-plugin.com/badge.svg)](https://awesome-dsh-plugin.com)
 
-[DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness)（`dsh`）web 的 **HUD 状态面板**插件：输入框工具行一键按钮，右侧浮层面板展示 Git 状态、MCP 服务器、技能列表、官方用量信息与余额。
+[DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness)（`dsh`）web 的 **HUD 状态面板**插件：输入框工具行一键按钮，可拖动浮层面板展示 Git 状态、MCP 服务器、技能列表、官方用量信息与余额。
 
 *非官方项目：社区成员独立开发维护，非 DeepSeek 官方产品。*
 
@@ -16,7 +16,7 @@
 
 ![dsh-hud 面板](assets/hud-panel.png)
 
-右侧浮层面板：Git 状态、提交历史、MCP 服务器、技能列表，以及官方用量信息
+可拖动浮层面板：Git 状态、提交历史、MCP 服务器、技能列表，以及官方用量信息
 （token 输入/输出、缓存命中率、轮数/步数、LLM 与工具耗时、上下文占用）。
 
 ## 功能
@@ -50,8 +50,9 @@ dsh plugin --profile web add "github:a903067276-rgb/dsh-hud#main"
 
 ## 用法
 
-点输入框工具行的仪表盘图标按钮（官方 dsw 风格，跟随深浅色主题）。面板贴右侧展开（默认 240px），拖左边缘把手调整宽度
-（200–480px，localStorage 记忆）。带计数徽标的小节标题可点击折叠/展开。数据每 30 秒
+点输入框工具行的仪表盘图标按钮（官方 dsw 风格，跟随深浅色主题）。面板默认在左侧展开（默认 240px，
+避开官方右侧回合导航条），**拖标题栏可任意移动位置**（localStorage 记忆，重开面板按记忆位置显示）；
+拖左边缘把手调整宽度（200–480px，localStorage 记忆）。带计数徽标的小节标题可点击折叠/展开。数据每 30 秒
 自动刷新（面板关闭时只轮询轻量的 git 角标数据）。
 
 ## 平台支持
