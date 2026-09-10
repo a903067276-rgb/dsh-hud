@@ -10,7 +10,7 @@ A **HUD status panel** plugin for [DeepSeek Harness](https://github.com/deepseek
 
 *Unofficial project: independently developed and maintained by a community member, not an official DeepSeek product.*
 
-## Screenshot
+## Screenshots
 
 ![dsh-hud gauge button in the input toolbar](assets/hud-button.png)
 
