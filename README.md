@@ -121,6 +121,14 @@ step, sharing state between the button and the panel through a module-level stor
   trees (e.g. a parent folder containing dozens of repos) where macOS file watchers are
   unreliable; the watcher is also capped at 128 by default (deeper changes surface via
   polling within ~30s).
+- **`DSH_HUD_BALANCE=off` disables the balance request entirely** — no outbound call, no log
+  line, the panel just shows `--`.
+- **Balance only works with an official DeepSeek key.** The endpoint (`/user/balance`) is the
+  official one and the credential is `DEEPSEEK_API_KEY`; if that variable holds a
+  relay/gateway key, the request returns 401, so the panel shows `--`. Such a failure is
+  reported **once** and then backed off for 30 minutes (older versions retried every 60s and
+  logged every attempt). Support for non-official API balances is planned
+  ([#10](https://github.com/a903067276-rgb/dsh-hud/issues/10)).
 
 ## Development
 
