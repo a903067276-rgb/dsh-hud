@@ -1,6 +1,6 @@
 {
   "name": "dsh-hud",
-  "version": "1.5.2",
+  "version": "1.6.0",
   "description": "A HUD status panel for DSH web: git status, MCP servers, skills, model and token usage in a floating side panel",
   "icon": "assets/icon.svg",
   "type": "module",
@@ -46,7 +46,8 @@
     "client": {
       "inject": [
         "@deepseek-ai/dsh-api-remotes",
-        "@deepseek-ai/dsh-client-ui-conversation"
+        "@deepseek-ai/dsh-client-ui-conversation",
+        "@deepseek-ai/dsh-client-ui-plugin-manager"
       ],
       "platform": "web"
     }
