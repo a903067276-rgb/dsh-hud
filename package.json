@@ -2,6 +2,7 @@
   "name": "dsh-hud",
   "version": "1.4.0",
   "description": "A HUD status panel for DSH web: git status, MCP servers, skills, model and token usage in a floating side panel",
+  "icon": "assets/icon.svg",
   "type": "module",
   "main": "lib/index.js",
   "scripts": {
@@ -11,11 +12,14 @@
     ".": "./lib/index.js",
     "./client": "./lib/client.js",
     "./cordis.patch.yml": "./cordis.patch.yml",
-    "./package.json": "./package.json"
+    "./package.json": "./package.json",
+    "./locale/*": "./locale/*"
   },
   "files": [
     "lib",
-    "cordis.patch.yml"
+    "cordis.patch.yml",
+    "assets",
+    "locale"
   ],
   "keywords": [
     "dsh",

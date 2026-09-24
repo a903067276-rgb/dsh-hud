@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "HUD",
+    "description": "Status panel for git status, MCP servers, skills, model and token usage."
+  }
+}

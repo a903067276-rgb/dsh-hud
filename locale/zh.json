@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "HUD 状态面板",
+    "description": "状态面板：展示 Git 状态、MCP 服务器、技能列表、模型与 token 用量。"
+  }
+}
