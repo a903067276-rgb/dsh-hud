@@ -49,7 +49,10 @@ This repository is an official **bundle plugin** (`dsh.bundle` + `dsh.client` in
 `package.json`), installed through the official profile manager:
 
 ```sh
+# DSH 0.1.7 and later:
 dsh plugin --profile web add "github:a903067276-rgb/dsh-hud#main"
+# DSH 0.1.5 and older (this release needs 0.1.7+):
+# dsh plugin --profile web add "github:a903067276-rgb/dsh-hud#v1.4.1"
 ```
 
 Then **restart `dsh web`** (bundle layers are composed at startup; HMR does not apply).
