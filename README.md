@@ -79,8 +79,9 @@ the panel is closed, only the lightweight git badge keeps polling).
 
 - DSH web >= 0.1.1-rc.1 (run with `npx @deepseek-ai/dsh web`)
 - **Version compatibility** (the per-model usage projection uses the DSH 0.1.1+ contract; 0.1.0-rc.7/rc.8 still use the old one):
-  - ✅ **DSH 0.1.7 and later — use this release (`v1.5.0`)**: it declares `peerDependencies: {"@deepseek-ai/dsh": ">=0.1.7-rc.1 <0.2.0"}`, so a mismatched host refuses to load it with an explicit reason instead of failing quietly. Settings move to the 0.1.7 model (plugin `Config`, live-editable `.volatile()` fields), so changes apply without a restart.
+  - ✅ **DSH 0.1.7 and later — use this release (`v1.5.1`)**: it declares `peerDependencies: {"@deepseek-ai/dsh": ">=0.1.7-rc.1 <0.2.0"}`, so a mismatched host refuses to load it with an explicit reason instead of failing quietly. Settings move to the 0.1.7 model (plugin `Config`, live-editable `.volatile()` fields), so changes apply without a restart.
   - ⚠️ **DSH 0.1.5 and older — install the previous tag `v1.4.1`**: that line keeps the old behavior and uses no 0.1.7-only API.
+  - ⛔ **Old plugin releases (up to `v1.4.1`) are not supported on 0.1.7** — every git command fails (`shell.run` is gone) so the Git block is empty, and the right-sidebar tab form is never used. Upgrade the plugin together with the host.
 - **Maintenance policy**: this plugin keeps evolving with the latest DSH releases; compatibility with older DSH versions is best-effort only and not guaranteed going forward.
 
 | Your DSH version | Install this | Note |
