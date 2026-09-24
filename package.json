@@ -1,6 +1,6 @@
 {
   "name": "dsh-hud",
-  "version": "1.4.0",
+  "version": "1.5.0",
   "description": "A HUD status panel for DSH web: git status, MCP servers, skills, model and token usage in a floating side panel",
   "icon": "assets/icon.svg",
   "type": "module",
@@ -52,7 +52,8 @@
     }
   },
   "peerDependencies": {
+    "@deepseek-ai/dsh": ">=0.1.7-rc.1 <0.2.0",
     "@deepseek-ai/cordis": "^4.0.1-rc.1",
-    "@deepseek-ai/schemastery": "^3.18.1"
+    "@deepseek-ai/schemastery": "^3.18.3"
   }
 }
