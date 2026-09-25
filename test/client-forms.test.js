@@ -44,7 +44,7 @@ function mockReact() {
 
 /** 造一个假 ctx，记录插件对它做了什么。 */
 function fakeCtx({ withSidebar = true } = {}) {
-  const calls = { tabTypes: [], injects: [], registrations: [], effects: [] }
+  const calls = { tabTypes: [], injects: [], ctxInjects: [], registrations: [], effects: [] }
   const slots = {
     // inject 是「等目标槽出现再注册」的惰性包装：测试里立即执行，只记录注入点
     inject(name, fn) { calls.injects.push(name); return fn() },
@@ -57,13 +57,26 @@ function fakeCtx({ withSidebar = true } = {}) {
     ? { register(def) { calls.tabTypes.push(def); return () => {} } }
     : undefined
   const sidebarRight = withSidebar ? { openTab() {}, close() {} } : undefined
+  // 定时器替身：立即兑现回调。client.js 用 timer.setTimeout 做"等服务 1.2s 仍没来就
+  // 回落浮窗"的宽限，测试里必须立刻到期，否则同步断言看不到浮窗注册。
+  const timer = { setTimeout(fn) { fn(); return 0 }, clearTimeout() {} }
   const ctx = {
     get(name) {
       if (name === 'slots') return slots
-      if (name === 'timer') return undefined
+      if (name === 'timer') return timer
       if (name === 'sidebarRightTabs') return sidebarRightTabs
       if (name === 'sidebarRight') return sidebarRight
       return undefined
+    },
+    // cordis 的 ctx.inject(deps, cb)：依赖服务就绪后才回调，scope 上挂着这些服务。
+    // 替身按同一语义——依赖齐则同步回调，缺依赖则不回调（旧宿主正是靠这个回落浮窗）。
+    inject(deps, callback) {
+      const names = Array.isArray(deps) ? deps : [deps]
+      calls.ctxInjects.push(names)
+      if (names.some((name) => ctx.get(name) === undefined)) return undefined
+      const scope = {}
+      for (const name of names) scope[name] = ctx.get(name)
+      return callback(scope)
     },
     effect(fn) { calls.effects.push(fn); return fn() },
   }
