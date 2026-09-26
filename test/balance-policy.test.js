@@ -11,6 +11,7 @@ import {
   parseBalance,
   parseBalanceCustom,
   getByPath,
+  BALANCE_PRESETS,
   createBalanceCollector,
 } from '../lib/balance-policy.js'
 
@@ -231,4 +232,25 @@ test('collector：custom 档走自定义地址与请求头；off 档一次都不
   calls.length = 0
   assert.equal(await c.collect(key, { mode: 'custom', url: '' }), null)
   assert.equal(calls.length, 0)
+})
+
+test('parseBalanceCustom：单位换算（one-api 的 quota 要除以兑换比例）', () => {
+  assert.equal(parseBalanceCustom({ data: { quota: 2500000 } }, 'data.quota', { scale: 500000 }).total, 5)
+  assert.equal(parseBalanceCustom({ data: { quota: 2500000 } }, 'data.quota', { scale: 1000000 }).total, 2.5)
+  assert.equal(parseBalanceCustom({ data: { quota: 2500000 } }, 'data.quota').total, 2500000) // 不填比例就不换算
+})
+
+test('parseBalanceCustom：两字段相减（OpenRouter 余额 = 总额 − 已用）', () => {
+  assert.equal(parseBalanceCustom({ data: { total_credits: 30, total_usage: 12.5 } }, 'data.total_credits', { subtractPath: 'data.total_usage' }).total, 17.5)
+  assert.equal(parseBalanceCustom({ data: { total_credits: 30 } }, 'data.total_credits', { subtractPath: 'data.total_usage' }), null) // 缺字段 → --，不糊弄
+})
+
+test('BALANCE_PRESETS：填了名字就能带出 URL / 路径 / 凭据变量（各家文档里的真实值）', () => {
+  assert.equal(BALANCE_PRESETS.kimi.url, 'https://api.moonshot.cn/v1/users/me/balance')
+  assert.equal(BALANCE_PRESETS.kimi.path, 'data.available_balance')
+  assert.equal(BALANCE_PRESETS.kimi.tokenEnv, 'MOONSHOT_API_KEY')
+  assert.equal(BALANCE_PRESETS.openrouter.subtractPath, 'data.total_usage')
+  assert.equal(BALANCE_PRESETS['one-api'].scale, 500000)
+  assert.equal(BALANCE_PRESETS['one-api'].url, '') // 每家地址不同，必须用户自己填
+  assert.equal(BALANCE_PRESETS.deepseek.mode, 'official')
 })

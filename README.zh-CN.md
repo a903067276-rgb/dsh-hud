@@ -33,6 +33,8 @@
 - **Skills** —— 当前 agent 可用的技能列表
 - **官方信息聚合** —— 当前模型 + reasoning effort、plan 状态、token 用量（输入 / 输出 /
   缓存命中率）、会话统计（轮数、步数、LLM 与工具耗时、解码 tok/s、上下文占用 %）
+- **余额预设（2026-09-26 调研后加）** —— `balancePreset` 填服务名就自动带好地址/请求头/字段路径/凭据变量：`kimi`（`data.available_balance`）、`siliconflow`（`data.totalBalance`）、`openrouter`（`total_credits − total_usage`）、`zai`、`one-api`（自建/中转系，`data.quota` 需 `balanceScale` 换算，默认 50 万/元；地址每家不同要自己填）、`deepseek`（=官方）。自己填的字段优先于预设。
+- **余额安全闸** —— 自定义地址必须是 https（本机/内网除外），否则拒绝请求并提示；**不跟随 302 重定向**（防 Authorization 被带到别的域）；key 只放请求头、绝不拼进 URL；接口回 200 但解析不到余额时会提示一次（one-api 系出错就是 200 + `success:false`）。
 - **余额（三档可选，2026-09-26 新增）** —— `balanceMode` 选：`off` 不请求也不显示 / `official`（默认）走 DeepSeek 官方 `GET /user/balance` / `custom` 走你自己的接口（配 `balanceUrl`，可选 `balanceHeader`（默认 `authorization: Bearer <key>`）、`balanceTokenEnv`（默认 `DEEPSEEK_API_KEY`）、`balancePath`（如 `data.balance`、`balance_infos[0].total_balance`；留空则宽松找常见字段）、`balanceCurrency`）。**key 只会发给你自己配置的那个地址**；取不到/失败一律显示 `--`，不会瞎猜一个数
 - **分模型用量** —— 本会话按模型的 token 明细（请求数/输入/缓存/输出），切换
   flash/pro 后两个模型的用量都保留显示

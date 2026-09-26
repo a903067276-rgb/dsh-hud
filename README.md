@@ -130,6 +130,11 @@ step, sharing state between the button and the panel through a module-level stor
   `balanceTokenEnv` (default `DEEPSEEK_API_KEY`), `balancePath` (e.g. `data.balance`) and
   `balanceCurrency`). The key is only ever sent to the address you configured yourself; anything
   unavailable shows `--` instead of a guessed number.
+- **Presets** (`balancePreset`): `kimi` / `siliconflow` / `openrouter` (total_credits − total_usage) /
+  `zai` / `one-api` (needs `balanceScale`, e.g. 500000 per unit, plus your own `balanceUrl`) / `deepseek`.
+  Fields you set yourself always win over the preset. Custom URLs must be https (localhost/LAN excepted),
+  redirects are never followed (so Authorization can't be bounced to another host), the key only ever
+  travels in a header, and a 200 response that yields no number gets a one-time hint.
 - **`DSH_HUD_NO_WATCH=1` disables file watching entirely** — the HUD then refreshes purely
   via its 30s polling + manual/focus refresh. Useful on machines with enormous directory
   trees (e.g. a parent folder containing dozens of repos) where macOS file watchers are
