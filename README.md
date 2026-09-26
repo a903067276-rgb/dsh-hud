@@ -27,7 +27,11 @@ context usage).
 ## Features
 
 - **Git** — branch, ahead/behind, unstaged / staged / untracked files (collapsible groups),
-  per-file `+N/-N` summaries, click a file to expand its full diff, last 5 commits
+  per-file `+N/-N` summaries, click a file to expand its full diff, last 10 commits
+  (`commitCount`, 1–50; the commit list starts **collapsed**)
+- **Change-driven folding (2026-09-26)** — a clean repo/sub-repo collapses to a single line
+  (with ✓ and ↑↓ unpushed counts); a dirty one auto-expands down to the file level. Once you
+  toggle a repo yourself, your choice wins and is remembered (localStorage)
 - **MCP** — connected MCP servers (derived from `mcp__<server>__<tool>` tool names)
 - **Skills** — skills available to the current agent
 - **Official info** — current model + reasoning effort, plan mode state, token usage
@@ -119,9 +123,13 @@ step, sharing state between the button and the panel through a module-level stor
 ## Notes
 
 - Use either the official bundle install or the manual mount — never both.
-- All data is gathered locally from the running `dsh` instance; the only outbound call is
-  the official balance API using the `DEEPSEEK_API_KEY` credential (the key never leaves
-  the host).
+- All data is gathered locally from the running `dsh` instance. The only outbound call is the
+  balance request: `balanceMode` picks `off` (never request, never show) / `official` (default,
+  DeepSeek `GET /user/balance` with the `DEEPSEEK_API_KEY` credential) / `custom` (your own
+  endpoint — `balanceUrl` plus optional `balanceHeader` (default `authorization: Bearer <key>`),
+  `balanceTokenEnv` (default `DEEPSEEK_API_KEY`), `balancePath` (e.g. `data.balance`) and
+  `balanceCurrency`). The key is only ever sent to the address you configured yourself; anything
+  unavailable shows `--` instead of a guessed number.
 - **`DSH_HUD_NO_WATCH=1` disables file watching entirely** — the HUD then refreshes purely
   via its 30s polling + manual/focus refresh. Useful on machines with enormous directory
   trees (e.g. a parent folder containing dozens of repos) where macOS file watchers are

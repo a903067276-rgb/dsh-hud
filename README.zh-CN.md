@@ -26,13 +26,14 @@
 ## 功能
 
 - **Git** —— 分支、ahead/behind、未暂存 / 已暂存 / 未跟踪文件（分组可折叠）、每文件
-  `+N/-N` 摘要、点击文件展开 diff 全文、最近 5 条提交
+  `+N/-N` 摘要、点击文件展开 diff 全文、最近 10 条提交（条数由 `commitCount` 配，1~50；
+  **提交记录默认收起**，点开才展开）
+- **按改动自动折叠（2026-09-26 用户定）** —— 干净的仓库/子仓库**收成一行**（带 ✓ 与 ↑↓ 未推送数），有改动的**自动展开到文件层**；手动点过之后以你的选择为准，并记住（localStorage，重开面板/刷新都算数）
 - **MCP** —— 已挂载的 MCP 服务器（从 `mcp__<服务器>__<工具>` 工具名推导）
 - **Skills** —— 当前 agent 可用的技能列表
 - **官方信息聚合** —— 当前模型 + reasoning effort、plan 状态、token 用量（输入 / 输出 /
   缓存命中率）、会话统计（轮数、步数、LLM 与工具耗时、解码 tok/s、上下文占用 %）
-- **官方余额** —— 自动调 `GET /user/balance`（用 `DEEPSEEK_API_KEY` 凭据，key 不出机器；
-  不可用时显示 `--`）
+- **余额（三档可选，2026-09-26 新增）** —— `balanceMode` 选：`off` 不请求也不显示 / `official`（默认）走 DeepSeek 官方 `GET /user/balance` / `custom` 走你自己的接口（配 `balanceUrl`，可选 `balanceHeader`（默认 `authorization: Bearer <key>`）、`balanceTokenEnv`（默认 `DEEPSEEK_API_KEY`）、`balancePath`（如 `data.balance`、`balance_infos[0].total_balance`；留空则宽松找常见字段）、`balanceCurrency`）。**key 只会发给你自己配置的那个地址**；取不到/失败一律显示 `--`，不会瞎猜一个数
 - **分模型用量** —— 本会话按模型的 token 明细（请求数/输入/缓存/输出），切换
   flash/pro 后两个模型的用量都保留显示
 

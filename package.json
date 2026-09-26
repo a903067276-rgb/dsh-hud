@@ -1,6 +1,6 @@
 {
   "name": "dsh-hud",
-  "version": "1.6.1",
+  "version": "1.7.0",
   "description": "A HUD status panel for DSH web: git status, MCP servers, skills, model and token usage in a floating side panel",
   "icon": "assets/icon.svg",
   "type": "module",

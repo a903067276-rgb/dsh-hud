@@ -9,6 +9,8 @@ import {
   backoffFor,
   shouldWarn,
   parseBalance,
+  parseBalanceCustom,
+  getByPath,
   createBalanceCollector,
 } from '../lib/balance-policy.js'
 
@@ -103,8 +105,9 @@ test('回归（issue #10）：中转 key 每 60s 轮询 30 分钟，只 1 条告
   }
   assert.equal(h.warns.length, 1, '30 分钟内只应告警一次')
   assert.equal(h.fetchCount(), 1, '退避期内不应重复请求')
-  assert.match(h.warns[0], /不适用于 DeepSeek 官方余额接口/)
-  assert.match(h.warns[0], /DSH_HUD_BALANCE=off/)
+  assert.match(h.warns[0], /凭据不适用于 DeepSeek 官方余额接口/)
+  assert.match(h.warns[0], /balanceMode/)          // 2026-09-26：告警里给出路（改用 custom 或 off）
+  assert.match(h.warns[0], /（或设成 off 不显示）/)
 })
 
 test('退避到期后才重试，且同类失败不再告警', async () => {
@@ -127,7 +130,7 @@ test('失败 → 成功 → 再失败：告警重新计一次，且成功后 60s
   h.clock.advance(BALANCE_AUTH_BACKOFF_MS) // 等退避到期
   mode = 'ok'
   const value = await h.collector.collect(KEY)
-  assert.deepEqual(value, { currency: 'CNY', total: 12.34, granted: 1, toppedUp: 11.34 })
+  assert.deepEqual(value, { currency: 'CNY', total: 12.34, granted: 1, toppedUp: 11.34, source: 'official' })
   assert.equal(h.warns.length, 1, '成功不告警')
   h.clock.advance(BALANCE_OK_CACHE_MS - 1000)
   await h.collector.collect(KEY)
@@ -142,7 +145,7 @@ test('网络错误：5 分钟退避 + error 文案（与 401 区分）', async (
   const h = harness(async () => { throw new Error('fetch failed') })
   assert.equal(await h.collector.collect(KEY), null)
   assert.equal(h.warns.length, 1)
-  assert.match(h.warns[0], /\[dsh-hud\] balance failed: fetch failed/)
+  assert.match(h.warns[0], /\[dsh-hud\] balance failed（DeepSeek 官方余额接口）: fetch failed/)
   assert.match(h.warns[0], /5 分钟内不再重试/)
   h.clock.advance(BALANCE_ERROR_BACKOFF_MS - 1000)
   await h.collector.collect(KEY)
@@ -155,7 +158,7 @@ test('无凭据：不请求、不告警；60s 后可再试（用户可能刚配�
   assert.equal(h.fetchCount(), 0)
   assert.equal(h.warns.length, 0)
   h.clock.advance(BALANCE_OK_CACHE_MS + 1000)
-  assert.deepEqual(await h.collector.collect(KEY), { currency: 'CNY', total: 12.34, granted: 1, toppedUp: 11.34 })
+  assert.deepEqual(await h.collector.collect(KEY), { currency: 'CNY', total: 12.34, granted: 1, toppedUp: 11.34, source: 'official' })
 })
 
 test('请求带上 Bearer 凭据', async () => {
@@ -169,7 +172,7 @@ test('请求带上 Bearer 凭据', async () => {
 // ── 响应解析 ──────────────────────────────────────────────────────────────
 
 test('parseBalance：正常形状解析出数值', () => {
-  assert.deepEqual(parseBalance(BALANCE_BODY), { currency: 'CNY', total: 12.34, granted: 1, toppedUp: 11.34 })
+  assert.deepEqual(parseBalance(BALANCE_BODY), { currency: 'CNY', total: 12.34, granted: 1, toppedUp: 11.34, source: 'official' })
 })
 
 test('parseBalance：形状不符 → null（面板显示 --，不炸）', () => {
@@ -177,4 +180,55 @@ test('parseBalance：形状不符 → null（面板显示 --，不炸）', () =>
   assert.equal(parseBalance({}), null)
   assert.equal(parseBalance({ balance_infos: [] }), null)
   assert.equal(parseBalance({ balance_infos: [{ total_balance: 123 }] }), null)
+})
+
+// ── 自定义（非官方）余额接口（2026-09-26 新增）──────────────────────────────
+
+test('getByPath：点号 + 数组下标取值', () => {
+  const data = { data: { balance: 5, list: [{ total_available: '9.5' }] }, balance_infos: [{ total_balance: '1' }] }
+  assert.equal(getByPath(data, 'data.balance'), 5)
+  assert.equal(getByPath(data, 'data.list[0].total_available'), '9.5')
+  assert.equal(getByPath(data, 'balance_infos[0].total_balance'), '1')
+  assert.equal(getByPath(data, 'data.nope.deep'), undefined)
+  assert.equal(getByPath(data, ''), undefined)
+})
+
+test('parseBalanceCustom：配了路径按路径取；非数字 → null（宁显示 -- 不显示错数）', () => {
+  assert.deepEqual(parseBalanceCustom({ data: { balance: 12.34 } }, 'data.balance'),
+    { currency: 'CNY', total: 12.34, granted: 0, toppedUp: 0, source: 'custom' })
+  assert.deepEqual(parseBalanceCustom({ data: { credits: '7.00' } }, 'data.credits').total, 7)
+  assert.equal(parseBalanceCustom({ data: { msg: 'no number' } }, 'data.balance'), null)
+})
+
+test('parseBalanceCustom：没配路径 → 宽松找常见字段（balance / total_available / data.balance）', () => {
+  assert.equal(parseBalanceCustom({ balance: 3 }, '').total, 3)
+  assert.equal(parseBalanceCustom({ data: { total_available: '8' } }, '').total, 8)
+  // 只找一层嵌套（data / data.balance / data.data.balance），再深的组合不猜——宁可显示 --
+  assert.equal(parseBalanceCustom({ data: { data: { balance: 4 } } }, ''), null)
+  assert.equal(parseBalanceCustom({ nothing: 'here' }, ''), null)
+})
+
+test('collector：custom 档走自定义地址与请求头；off 档一次都不请求', async () => {
+  const calls = []
+  const fetchImpl = async (url, init) => {
+    calls.push({ url, headers: init.headers })
+    return { ok: true, status: 200, json: async () => ({ data: { balance: 42 } }) }
+  }
+  const c = createBalanceCollector({ fetchImpl, env: () => ({}) })
+  const key = async () => 'gw-key'
+
+  assert.equal(await c.collect(key, { mode: 'off' }), null)
+  assert.equal(calls.length, 0, 'off 档不该发请求')
+
+  const value = await c.collect(key, { mode: 'custom', url: 'https://gw.example.com/api/user/self', path: 'data.balance', header: 'x-api-key' })
+  assert.equal(calls.length, 1)
+  assert.equal(calls[0].url, 'https://gw.example.com/api/user/self')
+  assert.equal(calls[0].headers['x-api-key'], 'gw-key')
+  assert.equal(value.total, 42)
+  assert.equal(value.source, 'custom')
+
+  // 没填地址 → 当关掉，不请求
+  calls.length = 0
+  assert.equal(await c.collect(key, { mode: 'custom', url: '' }), null)
+  assert.equal(calls.length, 0)
 })
