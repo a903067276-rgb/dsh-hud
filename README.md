@@ -32,6 +32,16 @@ context usage).
 - **Change-driven folding (2026-09-26)** — a clean repo/sub-repo collapses to a single line
   (with ✓ and ↑↓ unpushed counts); a dirty one auto-expands down to the file level. Once you
   toggle a repo yourself, your choice wins and is remembered (localStorage)
+- **Group folding (2026-10-01)** — sub-repos under the same workspace / watched repo form a
+  group: when **everything is clean only the parent row remains** (with `✓ N repos`), and no
+  sub-folder names are listed at all; when something is dirty only the **dirty** sub-repos are
+  listed and the rest fold into one `▸ N more clean repos` row. Clicking the parent row expands
+  the whole group
+- **Refresh on demand (2026-10-01)** — file changes go through a cheap fingerprint (one shell
+  call returning each repo's change count / branch / ahead-behind / HEAD): **no full refresh
+  unless the fingerprint changed**; while anything is dirty a full refresh runs at most every
+  5s so `+/-` details stay fresh. Net effect: a clean workspace costs 1 shell call per change
+  (previously one shell call per repo)
 - **MCP** — connected MCP servers (derived from `mcp__<server>__<tool>` tool names)
 - **Skills** — skills available to the current agent
 - **Official info** — current model + reasoning effort, plan mode state, token usage
