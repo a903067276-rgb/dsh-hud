@@ -1,6 +1,6 @@
 {
   "name": "dsh-hud",
-  "version": "1.9.3",
+  "version": "1.9.4",
   "description": "A HUD status panel for DSH web: git status, MCP servers, skills, model and token usage in a floating side panel",
   "icon": "assets/icon.svg",
   "type": "module",
@@ -48,7 +48,8 @@
         "0.2.0-rc.1": "compatible",
         "0.2.0-rc.2": "compatible",
         "0.2.1-rc.1": "compatible",
-        "0.2.1-rc.2": "compatible"
+        "0.2.1-rc.2": "compatible",
+        "0.2.2-rc.3": "compatible"
       }
     },
     "bundle": {
