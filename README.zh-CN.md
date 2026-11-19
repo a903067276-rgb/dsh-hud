@@ -4,6 +4,10 @@
 
 ![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)
 
+> ⚠️ **Name collision**: the npm package `dsh-hud` (0.1.0, by dafei1288) is a **different, unrelated plugin**. This one ships from GitHub only.
+>
+> ⚠️ **同名包提示**：npm 上的 `dsh-hud`（0.1.0，作者 dafei1288）**是另一个插件，不是本项目**。本项目只从 GitHub 安装。
+
 [![Awesome DSH Plugin](https://awesome-dsh-plugin.com/badge.svg)](https://awesome-dsh-plugin.com)
 
 [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness)（`dsh`）web 的 **HUD 状态面板**插件：输入框工具行一键按钮，可拖动浮层面板展示 Git 状态、MCP 服务器、技能列表、官方用量信息与余额。
